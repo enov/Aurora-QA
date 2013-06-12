@@ -25,3 +25,6 @@
 [submodule "modules/unittest"]
 	path = modules/unittest
 	url = http://github.com/kohana/unittest.git
+[submodule "modules/aurora"]
+	path = modules/aurora
+	url = https://github.com/enov/Aurora
