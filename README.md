@@ -6,4 +6,6 @@ This **Aurora-Tests** repository contains a test application and a unit tests su
 
 ## Running the tests
 
-...
+Please run the following from the command line:
+
+    phpunit --group=Aurora --bootstrap=modules/unittest/bootstrap.php modules/unittest/tests.php
