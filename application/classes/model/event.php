@@ -26,7 +26,7 @@ class Model_Event
 			$this->_timezone = new DateTimeZone(date_default_timezone_get());
 		return $this->_timezone;
 	}
-	protected function set_timezone($timezone) {
+	public function set_timezone($timezone) {
 		$timezone = $timezone instanceof DateTimeZone ? $timezone : new DateTimeZone($timezone);
 		if (isset($this->_start))
 			$this->_start->setTimezone($timezone);
@@ -140,5 +140,5 @@ class Aurora_Event extends Model_Event implements Interface_Aurora_Database
 	}
 }
 class Collection_Event extends Collection {
-	
+
 }
