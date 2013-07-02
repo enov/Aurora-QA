@@ -138,6 +138,9 @@ class Aurora_Event extends Model_Event implements Interface_Aurora_Database
 		$utc = new DateTimeZone('UTC');
 		return new DateTime($date, $utc);
 	}
+	/*
+	 * HOOKS
+	 */
 }
 class Collection_Event extends Collection {
 

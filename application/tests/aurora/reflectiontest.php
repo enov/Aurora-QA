@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Test case for Aurora_Reflection class
+ *
+ * @group Aurora
+ * @group Aurora.Reflection
+ */
 class Aurora_ReflectionTest extends Unittest_TestCase
 {
 	public function provider_cname() {

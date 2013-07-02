@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Test case for Aurora_Property class
+ *
+ * @group Aurora
+ * @group Aurora.Property
+ */
 class Aurora_PropertyTest extends Unittest_TestCase
 {
 	public function provider_getters() {

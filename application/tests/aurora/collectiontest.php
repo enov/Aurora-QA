@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Test case for Aurora_Collection class
+ *
+ * @group Aurora
+ * @group Aurora.Collection
+ */
 class Aurora_CollectionTest extends Unittest_TestCase
 {
 	public static $cols = array();

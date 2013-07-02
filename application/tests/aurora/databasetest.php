@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Test case for Aurora_Database class
+ *
+ * @group Aurora
+ * @group Aurora.Database
+ */
 class Aurora_DatabaseTest extends Unittest_TestCase
 {
 	/**
@@ -115,6 +121,54 @@ class Aurora_DatabaseTest extends Unittest_TestCase
 	 * @depends test_delete
 	 */
 	public function test_select_deleted($cname) {
+		$au = Aurora_Core::factory($cname, 'aurora');
+		/* @var $select_result Database_Result */
+		$select_result = Aurora_Database::select($au, static::$arrIDs[$cname]);
+		$this->assertSame($select_result->count(), 0);
+	}
+	/**
+	 * @dataProvider provider_crud
+	 * @depends test_select_deleted
+	 */
+	public function test_transaction_commit($cname, $row) {
+		$au = Aurora_Core::factory($cname, 'aurora');
+		// start transaction
+		Aurora_Database::begin($au);
+		$result = Aurora_Database::insert($au, $row);
+		static::$arrIDs[$cname] = $result[0];
+		$this->assertEquals($result[1], 1);
+		// commit transaction
+		Aurora_Database::commit($au);
+	}
+	/**
+	 * @dataProvider provider_crud
+	 * @depends test_transaction_commit
+	 */
+	public function test_select_transaction_committed($cname) {
+		$au = Aurora_Core::factory($cname, 'aurora');
+		/* @var $select_result Database_Result */
+		$select_result = Aurora_Database::select($au, static::$arrIDs[$cname]);
+		$this->assertSame($select_result->count(), 1);
+	}
+	/**
+	 * @dataProvider provider_crud
+	 * @depends test_select_transaction_committed
+	 */
+	public function test_transaction_rollback($cname, $row) {
+		$au = Aurora_Core::factory($cname, 'aurora');
+		// start transaction
+		Aurora_Database::begin($au);
+		$result = Aurora_Database::insert($au, $row);
+		static::$arrIDs[$cname] = $result[0];
+		$this->assertEquals($result[1], 1);
+		// rollback transaction
+		Aurora_Database::rollback($au);
+	}
+	/**
+	 * @dataProvider provider_crud
+	 * @depends test_transaction_rollback
+	 */
+	public function test_select_transaction_rolledback($cname) {
 		$au = Aurora_Core::factory($cname, 'aurora');
 		/* @var $select_result Database_Result */
 		$select_result = Aurora_Database::select($au, static::$arrIDs[$cname]);

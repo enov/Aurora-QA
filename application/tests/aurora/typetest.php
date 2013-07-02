@@ -27,6 +27,7 @@ class Aurora_TypeTest extends Unittest_TestCase
 	}
 	/**
 	 * @dataProvider provider_cname
+	 * @covers Aurora_Aurora_Type::is_model
 	 */
 	public function test_is_model($cname) {
 		list($m, $col, $au, $ctrl) = $this->prepare($cname);

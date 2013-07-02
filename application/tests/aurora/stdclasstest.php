@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Test case for Aurora_StdClass class
+ *
+ * @group Aurora
+ * @group Aurora.StdClass
+ */
 class Aurora_StdClassTest extends Unittest_TestCase
 {
 	public function provider() {
