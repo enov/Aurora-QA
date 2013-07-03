@@ -8,52 +8,43 @@
  */
 class Aurora_ProfilerTest extends Unittest_TestCase
 {
-	public static $arrTokens = array();
 	/**
-	 * provider
+	 * Start of Profiling
 	 */
-	public function provider() {
-		return array(
-			array(
-				'event',
-			)
-		);
-	}
-	/**
-	 * @dataProvider provider
-	 */
-	public function test_start($cname) {
+	public function test_start($cname = 'event') {
 		$aurora = Aurora_Core::factory($cname, 'aurora');
 		// PROFILING OFF
 		Kohana::$profiling = FALSE;
-		$benchmark = Aurora_Profiler::start($aurora, __FUNCTION__);
-		$this->assertFalse($benchmark);
+		$benchmarkFalse = Aurora_Profiler::start($aurora, 'test');
+		$this->assertFalse($benchmarkFalse);
 		// PROFILING ON
 		Kohana::$profiling = TRUE;
-		$benchmark = Aurora_Profiler::start($aurora, __FUNCTION__);
+		$benchmark = Aurora_Profiler::start($aurora, 'test');
 		$this->assertTrue((bool) $benchmark);
-		static::$arrTokens[$cname] = $benchmark;
+		return $benchmark;
 	}
 	/**
-	 * @dataProvider provider
 	 * @depends test_start
 	 */
-	public function test_stop($cname) {
-		$benchmark = static::$arrTokens[$cname];
+	public function test_stop($benchmark) {
 		Aurora_Profiler::stop($benchmark);
 		list($time, $memory) = Profiler::total($benchmark);
 		$this->assertGreaterThan(0, $time);
 		$this->assertGreaterThan(0, $memory);
+		return $benchmark;
 	}
 	/**
-	 * @dataProvider provider
-	 * @depends test_start
-     * @expectedException ErrorException
-	 * @expectedExceptionMessage Undefined index
+	 * @depends test_stop
 	 */
-	public function test_delete($cname) {
-		$benchmark = static::$arrTokens[$cname];
+	public function test_delete($benchmark) {
+		$groups = Profiler::groups();
+		var_dump($groups);
+		$this->assertTrue(array_key_exists('aurora', $groups));
+		$this->assertTrue(array_key_exists('Event::test', $groups['aurora']));
+		$this->assertTrue(in_array($benchmark, $groups['aurora']['Event::test']));
 		Aurora_Profiler::delete($benchmark);
-		list($time, $memory) = Profiler::total($benchmark);
+		$groups = Profiler::groups();
+		$this->assertTrue(array_key_exists('aurora', $groups));
+		$this->assertFalse(array_key_exists('Event::test', $groups['aurora']));
 	}
 }
