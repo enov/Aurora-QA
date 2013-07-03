@@ -1,8 +1,10 @@
-# Aurora-Tests
+# Aurora-QA
 
-[Aurora](https://github.com/enov/Aurora.git) is a kohana module to manually map models to database and expose a REST-like interface.
+[Aurora](https://github.com/enov/Aurora.git) is a kohana module to manually map
+models to database and expose a REST-like interface.
 
-This **Aurora-Tests** repository contains a test application and a unit tests suite for the Aurora module.
+This repository is a test application for Aurora and has some PHPUnit tests
+covering the module.
 
 ## Running the tests
 
