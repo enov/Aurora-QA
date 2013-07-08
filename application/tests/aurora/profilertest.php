@@ -43,7 +43,7 @@ class Aurora_ProfilerTest extends Unittest_TestCase
 		$this->assertTrue(in_array($benchmark, $groups['aurora']['Event::test']));
 		Aurora_Profiler::delete($benchmark);
 		$groups = Profiler::groups();
-		$this->assertTrue(array_key_exists('aurora', $groups));
-		$this->assertFalse(array_key_exists('Event::test', $groups['aurora']));
+		if (array_key_exists('aurora', $groups))
+			$this->assertFalse(array_key_exists('Event::test', $groups['aurora']));
 	}
 }
