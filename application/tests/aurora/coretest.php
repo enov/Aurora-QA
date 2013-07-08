@@ -13,6 +13,7 @@ class Aurora_CoreTest extends Unittest_TestCase
 	 * provider for test_insert
 	 */
 	public static $arrIDs = array();
+	public static $arrJSONs = array();
 	public function provider_crud() {
 		$event = new Model_Event;
 		$event->set_allDay(FALSE);
@@ -36,10 +37,13 @@ class Aurora_CoreTest extends Unittest_TestCase
 	 * @dataProvider provider_crud
 	 */
 	public function test_save_insert($col) {
+		// do the initial saving (insert)
 		Au::save($col);
+		// loop to assert if models now have IDs
 		foreach ($col as $model) {
 			$this->assertTrue(Au::is_loaded($model));
 		}
+		// save the IDs into a static field
 		$cname = Au::type()->cname($col);
 		static::$arrIDs[$cname] = array_map(function($model) {
 			  return Au::prop()->get_pkey($model);
@@ -73,7 +77,7 @@ class Aurora_CoreTest extends Unittest_TestCase
 		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
 		$prop = key($prop_to_update);
 		$value = current($prop_to_update);
-		foreach($col_loaded as $model) {
+		foreach ($col_loaded as $model) {
 			Au::prop()->set($model, $prop, $value);
 		}
 		Au::save($col_loaded);
@@ -104,5 +108,35 @@ class Aurora_CoreTest extends Unittest_TestCase
 			Au::prop()->set($model, $prop, $value);
 			$this->assertEquals($model, $model_loaded);
 		}
+	}
+	/**
+	 * @dataProvider provider_crud
+	 * @depends test_load_updated
+	 */
+	public function test_delete($col) {
+		$cname = Au::type()->cname($col);
+		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
+		Au::delete($col_loaded);
+	}
+	/**
+	 * @dataProvider provider_crud
+	 * @depends test_delete
+	 */
+	public function test_load_deleted($col, $prop_to_update) {
+		$cname = Au::type()->cname($col);
+		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
+		$this->assertTrue(Au::type()->is_collection($col_loaded));
+		$this->assertSame($col_loaded->count(), 0);
+	}
+	/**
+	 * @dataProvider provider_crud
+	 * @depends test_load_inserted
+	 */
+	public function test_json_encode($col) {
+		$cname = Au::type()->cname($col);
+		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
+		$json = Au::json_encode($col_loaded);
+		$col_from_json = Au::json_decode($json, $cname);
+		$this->assertEquals($col_loaded, $col_from_json);
 	}
 }
