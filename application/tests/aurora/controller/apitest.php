@@ -121,7 +121,6 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 		$cname = Aurora_Type::cname($model);
 		$uri = Aurora_Route::reverse($cname);
 		$id = static::$arrIDs[$cname];
-		echo $cname, $uri, $id;
 		$response_json = Request::factory($uri . '/' . $id)
 			->execute()->body();
 		$this->assertFalse(json_decode($response_json));
