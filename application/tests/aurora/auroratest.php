@@ -37,8 +37,12 @@ class Aurora_AuroraTest extends Unittest_TestCase
 	 * @dataProvider provider_crud
 	 */
 	public function test_save_insert($col) {
+		$aurora = Aurora::factory($col);
+		foreach ($col as $m) {
+			$this->assertTrue($aurora->is_new($m));
+		}
 		// do the initial saving (insert)
-		Aurora::factory($col)->save($col);
+		$aurora->save($col);
 		// loop to assert if models now have IDs
 		foreach ($col as $model) {
 			$this->assertTrue(Au::is_loaded($model));
@@ -55,10 +59,11 @@ class Aurora_AuroraTest extends Unittest_TestCase
 	 */
 	public function test_load_inserted($col) {
 		$cname = Au::type()->cname($col);
-		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
+		$aurora = Aurora::factory($col);
+		$col_loaded = $aurora->load(static::$arrIDs[$cname]);
 		$this->assertTrue(Au::type()->is_collection($col_loaded));
 		foreach ($col_loaded as $model) {
-			$this->assertTrue(Au::is_loaded($model));
+			$this->assertTrue($aurora->is_loaded($model));
 		}
 		// test to see if it has loaded correctly
 		foreach (static::$arrIDs[$cname] as $key => $id) {
@@ -74,16 +79,17 @@ class Aurora_AuroraTest extends Unittest_TestCase
 	 */
 	public function test_save_update($col, $prop_to_update) {
 		$cname = Au::type()->cname($col);
-		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
+		$aurora = Aurora::factory($col);
+		$col_loaded = $aurora->load(static::$arrIDs[$cname]);
 		$prop = key($prop_to_update);
 		$value = current($prop_to_update);
 		foreach ($col_loaded as $model) {
 			Au::prop()->set($model, $prop, $value);
 		}
-		Au::save($col_loaded);
+		$aurora->save($col_loaded);
 		$this->assertTrue(Au::type()->is_collection($col_loaded));
 		foreach ($col_loaded as $model) {
-			$this->assertTrue(Au::is_loaded($model));
+			$this->assertTrue($aurora->is_loaded($model));
 			$this->assertSame(Au::prop()->get($model, $prop), $value);
 		}
 	}
@@ -93,10 +99,11 @@ class Aurora_AuroraTest extends Unittest_TestCase
 	 */
 	public function test_load_updated($col, $prop_to_update) {
 		$cname = Au::type()->cname($col);
-		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
+		$aurora = Aurora::factory($col);
+		$col_loaded = $aurora->load(static::$arrIDs[$cname]);
 		$this->assertTrue(Au::type()->is_collection($col_loaded));
 		foreach ($col_loaded as $model) {
-			$this->assertTrue(Au::is_loaded($model));
+			$this->assertTrue($aurora->is_loaded($model));
 		}
 		// test to see if it has loaded correctly
 		$prop = key($prop_to_update);
@@ -115,8 +122,9 @@ class Aurora_AuroraTest extends Unittest_TestCase
 	 */
 	public function test_delete($col) {
 		$cname = Au::type()->cname($col);
-		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
-		Au::delete($col_loaded);
+		$aurora = Aurora::factory($col);
+		$col_loaded = $aurora->load(static::$arrIDs[$cname]);
+		$aurora->delete($col_loaded);
 	}
 	/**
 	 * @dataProvider provider_crud
@@ -124,7 +132,8 @@ class Aurora_AuroraTest extends Unittest_TestCase
 	 */
 	public function test_load_deleted($col, $prop_to_update) {
 		$cname = Au::type()->cname($col);
-		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
+		$aurora = Aurora::factory($col);
+		$col_loaded = $aurora->load(static::$arrIDs[$cname]);
 		$this->assertTrue(Au::type()->is_collection($col_loaded));
 		$this->assertSame($col_loaded->count(), 0);
 	}
@@ -134,9 +143,10 @@ class Aurora_AuroraTest extends Unittest_TestCase
 	 */
 	public function test_json_encode($col) {
 		$cname = Au::type()->cname($col);
-		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
-		$json = Au::json_encode($col_loaded);
-		$col_from_json = Au::json_decode($json, $cname);
+		$aurora = Aurora::factory($col);
+		$col_loaded = $aurora->load(static::$arrIDs[$cname]);
+		$json = $aurora->json_encode($col_loaded);
+		$col_from_json = $aurora->json_decode($json);
 		$this->assertEquals($col_loaded, $col_from_json);
 	}
 }
