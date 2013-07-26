@@ -100,7 +100,7 @@ class Model_Event
 	}
 }
 
-class Aurora_Event extends Model_Event implements Interface_Aurora_Database
+class Aurora_Event extends Model_Event implements Interface_Aurora_Database, Interface_Aurora_Hook_After_Create, Interface_Aurora_Hook_After_Delete, Interface_Aurora_Hook_After_Load, Interface_Aurora_Hook_After_Save, Interface_Aurora_Hook_After_Update, Interface_Aurora_Hook_Before_Create, Interface_Aurora_Hook_Before_Delete, Interface_Aurora_Hook_Before_Load, Interface_Aurora_Hook_Before_Save, Interface_Aurora_Hook_Before_Update
 {
 	public function db_persist($model) {
 		return array(
@@ -138,10 +138,44 @@ class Aurora_Event extends Model_Event implements Interface_Aurora_Database
 		$utc = new DateTimeZone('UTC');
 		return new DateTime($date, $utc);
 	}
+
+	public $hooks = array();
+	public function after_create($model) {
+		$this->hooks['after']['create'] = TRUE;
+	}
+	public function after_delete($model_or_collection) {
+		$this->hooks['after']['delete'] = TRUE;
+	}
+	public function after_load($model_or_collection) {
+		$this->hooks['after']['load'] = TRUE;
+	}
+	public function after_save($model_or_collection) {
+		$this->hooks['after']['save'] = TRUE;
+	}
+	public function after_update($model) {
+		$this->hooks['after']['update'] = TRUE;
+	}
+	public function before_create($model) {
+		$this->hooks['before']['create'] = TRUE;
+	}
+	public function before_delete($model_or_collection) {
+		$this->hooks['before']['delete'] = TRUE;
+	}
+	public function before_load(&$params) {
+		$this->hooks['before']['load'] = TRUE;
+	}
+	public function before_save($model_or_collection) {
+		$this->hooks['before']['save'] = TRUE;
+	}
+	public function before_update($model) {
+		$this->hooks['before']['update'] = TRUE;
+	}
 	/*
 	 * HOOKS
 	 */
 }
-class Collection_Event extends Collection {
+
+class Collection_Event extends Collection
+{
 
 }

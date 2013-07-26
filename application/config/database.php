@@ -7,7 +7,7 @@ return array
 	 * Also **fetch_table_names** is true by default
 	 * see the last config variable in this file
 	 */
-	'pdo' => array(
+	'default' => array(
 		'type'				 => 'pdo',
 		'connection'		 => array(
 			/**

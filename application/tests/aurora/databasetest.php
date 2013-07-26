@@ -16,7 +16,7 @@ class Aurora_DatabaseTest extends Unittest_TestCase
 			array(
 				'event',
 				array(
-					'config' => 'pdo',
+					'config' => 'default',
 					'transactional' => TRUE,
 					'table' => 'events',
 					'pkey' => 'id',
