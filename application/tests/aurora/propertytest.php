@@ -34,7 +34,22 @@ class Aurora_PropertyTest extends Unittest_TestCase
 						'type' => 'method',
 						'name' => 'title',
 					),
-				)),
+				)
+			),
+			// Model_Category
+			array(
+				new Model_Category,
+				array(
+					'id' => array(
+						'type' => 'property',
+						'name' => 'id',
+					),
+					'label' => array(
+						'type' => 'property',
+						'name' => 'label',
+					),
+				)
+			),
 		);
 	}
 	/**
@@ -71,7 +86,22 @@ class Aurora_PropertyTest extends Unittest_TestCase
 						'type' => 'method',
 						'name' => 'title',
 					),
-				)),
+				)
+			),
+			// Model_Category
+			array(
+				new Model_Category,
+				array(
+					'id' => array(
+						'type' => 'property',
+						'name' => 'id',
+					),
+					'label' => array(
+						'type' => 'property',
+						'name' => 'label',
+					),
+				)
+			),
 		);
 	}
 	/**
@@ -85,7 +115,8 @@ class Aurora_PropertyTest extends Unittest_TestCase
 	public function provider_getset() {
 		return array(
 			// Model_Event
-			array(new Model_Event, 'title', 'Appointment with doctor')
+			array(new Model_Event, 'title', 'Appointment with doctor'),
+			array(new Model_Category, 'label', 'Personal Calendar'),
 		);
 	}
 	/**
@@ -101,7 +132,8 @@ class Aurora_PropertyTest extends Unittest_TestCase
 	public function provider_getset_pkey() {
 		return array(
 			// Model_Event
-			array(new Model_Event, 10)
+			array(new Model_Event, 10),
+			array(new Model_Category, 10),
 		);
 	}
 	/**

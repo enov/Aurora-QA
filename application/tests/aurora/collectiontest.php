@@ -12,7 +12,15 @@ class Aurora_CollectionTest extends Unittest_TestCase
 	public function provider() {
 		return array(
 			array('event'),
+			array('category'),
 		);
+	}
+		/**
+	 * @dataProvider provider
+	 */
+	public function test_factory($cname) {
+		$col = Collection::factory($cname);
+		$this->assertTrue(Aurora_Type::is_collection($col));
 	}
 	/**
 	 * @dataProvider provider

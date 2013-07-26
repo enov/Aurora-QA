@@ -11,6 +11,7 @@ class Aurora_TypeTest extends Unittest_TestCase
 	public function provider_cname() {
 		return array(
 			array('Event'),
+			array('Category'),
 		);
 	}
 
