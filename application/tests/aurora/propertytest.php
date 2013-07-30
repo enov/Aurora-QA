@@ -134,6 +134,7 @@ class Aurora_PropertyTest extends Unittest_TestCase
 			// Model_Event
 			array(new Model_Event, 10),
 			array(new Model_Category, 10),
+			array(new Model_ProtectedID, 10),
 		);
 	}
 	/**
@@ -146,5 +147,15 @@ class Aurora_PropertyTest extends Unittest_TestCase
 		$this->assertEquals(
 		  Aurora_Property::get_pkey($model), $pkey_value
 		);
+
 	}
+}
+class Model_ProtectedID {
+	 protected $id;
+	 public function get_id () {
+		 return $this->id;
+	 }
+}
+class Aurora_ProtectedID {
+
 }
