@@ -149,4 +149,15 @@ class Aurora_AuroraTest extends Unittest_TestCase
 		$col_from_json = $aurora->json_decode($json);
 		$this->assertEquals($col_loaded, $col_from_json);
 	}
+
+	/**
+	 * test call
+	 */
+	public function test_aurora_call() {
+		$cname = 'Category';
+		$model = Model::factory($cname);
+		$aurora = Aurora::factory($cname);
+
+		$aurora->load_events($model);
+	}
 }

@@ -48,6 +48,14 @@ class Aurora_PropertyTest extends Unittest_TestCase
 						'type' => 'property',
 						'name' => 'label',
 					),
+					'parent' => array(
+						'type' => 'method',
+						'name' => 'parent',
+					),
+					'events' => array(
+						'type' => 'method',
+						'name' => 'events',
+					),
 				)
 			),
 		);
@@ -99,6 +107,14 @@ class Aurora_PropertyTest extends Unittest_TestCase
 					'label' => array(
 						'type' => 'property',
 						'name' => 'label',
+					),
+					'parent' => array(
+						'type' => 'method',
+						'name' => 'parent',
+					),
+					'events' => array(
+						'type' => 'method',
+						'name' => 'events',
 					),
 				)
 			),
