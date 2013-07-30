@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test case for Aurora_Collection class
  *
@@ -7,20 +8,34 @@
  */
 class Aurora_CollectionTest extends Unittest_TestCase
 {
-	public static $cols = array();
 
+	public static $cols = array();
 	public function provider() {
 		return array(
 			array('event'),
 			array('category'),
 		);
 	}
-		/**
+	/**
 	 * @dataProvider provider
 	 */
 	public function test_factory($cname) {
 		$col = Collection::factory($cname);
 		$this->assertTrue(Aurora_Type::is_collection($col));
+	}
+	/**
+	 * @dataProvider provider
+	 */
+	public function test_offset($cname) {
+		$offset = 'offset';
+		$col = Collection::factory($cname);
+		$this->assertTrue(Aurora_Type::is_collection($col));
+		$m = Model::factory($cname);
+		$col[$offset] = $m;
+		$this->assertTrue(isset($col[$offset]));
+		$this->assertArrayHasKey($offset, $col->to_array());
+		$this->assertContains($m, $col);
+		$this->assertSame($col[$offset], $m);
 	}
 	/**
 	 * @dataProvider provider

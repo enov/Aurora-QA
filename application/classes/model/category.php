@@ -2,7 +2,6 @@
 
 class Model_Category
 {
-
 	public $id;
 	public $label;
 }
