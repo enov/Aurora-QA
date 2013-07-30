@@ -58,6 +58,9 @@ class Aurora_DatabaseTest extends Unittest_TestCase
 				array(
 					'events.title' => 'Event updated title',
 				),
+				array(
+					'title' => 'Event initial title',
+				),
 			),
 		);
 	}
@@ -173,6 +176,67 @@ class Aurora_DatabaseTest extends Unittest_TestCase
 		/* @var $select_result Database_Result */
 		$select_result = Aurora_Database::select($au, static::$arrIDs[$cname]);
 		$this->assertSame($select_result->count(), 0);
+	}
+
+	/**
+	 * provider for test_select_event
+	 */
+		public function provider_build_query() {
+		return array(
+			array(
+				'event',
+				array(
+					'events.id' => NULL,
+					'events.date_start' => $this->mysql_set(new DateTime('+1 week')),
+					'events.date_end' => $this->mysql_set(new DateTime('+1 week +1 hour')),
+					'events.all_day' => 0,
+					'events.title' => 'Event initial title',
+				),
+				array(
+					'title' => 'Event initial title',
+				),
+				array(
+					'events.title' => 'Event initial title',
+				),
+			),
+		);
+	}
+	/**
+	 * a special test for Model_Event with the aim to test
+	 * Aurora_Database::select/build_query different functionalities
+	 *
+	 * @dataProvider provider_build_query
+	 */
+	public function test_build_query_param_array($cname, $row, $param, $expected) {
+		// TODO: Test results of 1) a query with filter function 2) an array param
+		$au = Aurora_Core::factory($cname, 'aurora');
+		$result = Aurora_Database::insert($au, $row);
+		$this->assertEquals($result[1], 1);
+		$select_result = Aurora_Database::select($au, $param);
+		$this->assertGreaterThan(0, $select_result->count());
+		foreach ($select_result as $row) {
+			$this->assertSame($row[key($expected)], current($expected));
+		}
+	}
+	/**
+	 * a special test for Model_Event with the aim to test
+	 * Aurora_Database::select/build_query different functionalities
+	 *
+	 * @dataProvider provider_build_query
+	 */
+	public function test_build_query_param_callable($cname, $row, $param, $expected) {
+		// TODO: Test results of 1) a query with filter function 2) an array param
+		$au = Aurora_Core::factory($cname, 'aurora');
+		$result = Aurora_Database::insert($au, $row);
+		$this->assertEquals($result[1], 1);
+		$filter = function($query) use ($param) {
+			return $query->where(key($param), '=', current($param));
+		};
+		$select_result = Aurora_Database::select($au, $filter);
+		$this->assertGreaterThan(0, $select_result->count());
+		foreach ($select_result as $row) {
+			$this->assertSame($row[key($expected)], current($expected));
+		}
 	}
 	//
 	//
