@@ -139,4 +139,53 @@ class Aurora_CoreTest extends Unittest_TestCase
 		$col_from_json = Au::json_decode($json, $cname);
 		$this->assertEquals($col_loaded, $col_from_json);
 	}
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function test_exception_json_serialize_InvalidArgumentException() {
+		$cname = 'Exceptionist';
+		$au = Aurora::factory($cname);
+		Au::json_serialize($au);
+	}
+	/**
+	 * @expectedException Kohana_Exception
+	 */
+	public function test_exception_load() {
+		$cname = 'Exceptionist';
+		$col_loaded = Au::load($cname);
+	}
+	/**
+	 * @expectedException Kohana_Exception
+	 */
+	public function test_exception_save() {
+		$cname = 'Exceptionist';
+		$model = Model::factory($cname);
+		Au::save($model);
+	}
+	/**
+	 * @expectedException Kohana_Exception
+	 */
+	public function test_exception_delete() {
+		$cname = 'Exceptionist';
+		$model = Model::factory($cname);
+		Au::delete($model);
+	}
+	/**
+	 * @expectedException Kohana_Exception
+	 */
+	public function test_exception_json_serialize() {
+		$cname = 'Exceptionist';
+		$model = Model::factory($cname);
+		Au::json_serialize($model);
+	}
+	/**
+	 * @expectedException Kohana_Exception
+	 */
+	public function test_exception_json_deserialize() {
+		$cname = 'Exceptionist';
+		$stdclass = new stdClass();
+		$stdclass->id = 10;
+		$stdclass->label = 'test';
+		Au::json_deserialize($stdclass, $cname);
+	}
 }
