@@ -8,7 +8,7 @@
  */
 class Aurora_StdClassTest extends Unittest_TestCase
 {
-	public function provider() {
+	public function dataprovider() {
 		$id = 1;
 		$title = "Appointment with Doctor";
 		$start = new DateTime('+1 week');
@@ -29,12 +29,30 @@ class Aurora_StdClassTest extends Unittest_TestCase
 		$std->end = $end->format(DATE_ISO8601);
 		$std->allDay = $allDay;
 
+		// category
+		$c_label = 'Category Appointments';
+		$c_id = 10;
+		$cat = new Model_Category();
+		$cat->id = $c_id;
+		$cat->label = $c_label;
+		$cat->get_events()->add($m);
+//		$cat_parent = new Model_Category();
+//		$cat_parent->id = $c_id + 1;
+//		$cat->set_parent($cat);
+
+		$c_std = new stdClass();
+		$c_std->id = $c_id;
+		$c_std->label = $c_label;
+		$c_std->parent = NULL;
+		$c_std->events = array($std);
+
 		return array(
-			array($m, $std)
+			array($m, $std),
+			array($cat, $c_std),
 		);
 	}
 	/**
-	 * @dataProvider provider
+	 * @dataProvider dataprovider
 	 */
 	public function test_from_model($model, $stdclass) {
 		$this->assertEquals(
@@ -42,7 +60,7 @@ class Aurora_StdClassTest extends Unittest_TestCase
 		);
 	}
 	/**
-	 * @dataProvider provider
+	 * @dataProvider dataprovider
 	 */
 	public function test_to_model($model, $stdclass) {
 		$this->assertEquals(
@@ -50,7 +68,7 @@ class Aurora_StdClassTest extends Unittest_TestCase
 		);
 	}
 	/**
-	 * @dataProvider provider
+	 * @dataProvider dataprovider
 	 */
 	public function test_from_collection($model, $stdclass) {
 		$col_class = Aurora_Type::collection($model);
@@ -61,7 +79,7 @@ class Aurora_StdClassTest extends Unittest_TestCase
 		);
 	}
 	/**
-	 * @dataProvider provider
+	 * @dataProvider dataprovider
 	 */
 	public function test_to_collection($model, $stdclass) {
 		$col_class = Aurora_Type::collection($model);

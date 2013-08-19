@@ -15,6 +15,7 @@ class Aurora_CoreTest extends Unittest_TestCase
 	public static $arrIDs = array();
 	public static $arrJSONs = array();
 	public function provider_crud() {
+		// Model_Event
 		$event = new Model_Event;
 		$event->set_allDay(FALSE);
 		$event->set_start(new DateTime('+1 week'));
@@ -28,9 +29,23 @@ class Aurora_CoreTest extends Unittest_TestCase
 		$col_event = new Collection_Event;
 		$col_event->add($event);
 		$col_event->add($event2);
+		// Model_Test_Event
+		$event_t = new Model_Test_Event;
+		$event_t->set_allDay(FALSE);
+		$event_t->set_start(new DateTime('+1 week'));
+		$event_t->set_end(new DateTime('+1 week'));
+		$event_t->set_title('Event initial title');
+		$event2_t = new Model_Test_Event;
+		$event2_t->set_allDay(FALSE);
+		$event2_t->set_start(new DateTime('+2 week'));
+		$event2_t->set_end(new DateTime('+2 week'));
+		$event2_t->set_title('Event 2 initial title');
+		$col_event_t = new Collection_Test_Event;
+		$col_event_t->add($event_t);
+		$col_event_t->add($event2_t);
 		return array(
-			array($col_event, array('title' => 'Event updated title',),
-			),
+			array($col_event, array('title' => 'Event updated title',)),
+			array($col_event_t, array('title' => 'Event updated title',)),
 		);
 	}
 	/**
@@ -140,14 +155,6 @@ class Aurora_CoreTest extends Unittest_TestCase
 		$this->assertEquals($col_loaded, $col_from_json);
 	}
 	/**
-	 * @expectedException InvalidArgumentException
-	 */
-	public function test_exception_json_serialize_InvalidArgumentException() {
-		$cname = 'Exceptionist';
-		$au = Aurora::factory($cname);
-		Au::json_serialize($au);
-	}
-	/**
 	 * @expectedException Kohana_Exception
 	 */
 	public function test_exception_load() {
@@ -169,23 +176,5 @@ class Aurora_CoreTest extends Unittest_TestCase
 		$cname = 'Exceptionist';
 		$model = Model::factory($cname);
 		Au::delete($model);
-	}
-	/**
-	 * @expectedException Kohana_Exception
-	 */
-	public function test_exception_json_serialize() {
-		$cname = 'Exceptionist';
-		$model = Model::factory($cname);
-		Au::json_serialize($model);
-	}
-	/**
-	 * @expectedException Kohana_Exception
-	 */
-	public function test_exception_json_deserialize() {
-		$cname = 'Exceptionist';
-		$stdclass = new stdClass();
-		$stdclass->id = 10;
-		$stdclass->label = 'test';
-		Au::json_deserialize($stdclass, $cname);
 	}
 }

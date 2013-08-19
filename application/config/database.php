@@ -41,4 +41,30 @@ return array
 		'caching'			 => FALSE,
 		'profiling'			 => TRUE,
 	),
+	'mysql' => array(
+		'type'       => 'mysql',
+		'connection' => array(
+			/**
+			 * The following options are available for MySQL:
+			 *
+			 * string   hostname     server hostname, or socket
+			 * string   database     database name
+			 * string   username     database username
+			 * string   password     database password
+			 * boolean  persistent   use persistent connections?
+			 * array    variables    system variables as "key => value" pairs
+			 *
+			 * Ports and sockets may be appended to the hostname.
+			 */
+			'hostname'   => 'localhost',
+			'database'   => 'aucal',
+			'username'   => 'aucal',
+			'password'   => '2sB3cq98CPwe2bj6',
+			'persistent' => FALSE,
+		),
+		'table_prefix' => '',
+		'charset'      => 'utf8',
+		'caching'      => FALSE,
+		'profiling'    => TRUE,
+	),
 );
