@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Test case for Aurora_StdClass class
+ * Test case for Aurora_JSON class
  *
  * @group Aurora
  * @group Aurora.StdClass
  */
-class Aurora_StdClassTest extends Unittest_TestCase
+class Aurora_JSONSerializeTest extends Unittest_TestCase
 {
 	public function dataprovider() {
 		$id = 1;
@@ -56,7 +56,7 @@ class Aurora_StdClassTest extends Unittest_TestCase
 	 */
 	public function test_from_model($model, $stdclass) {
 		$this->assertEquals(
-		  Aurora_StdClass::from_model($model), $stdclass
+		  Aurora_JSON::from_model($model), $stdclass
 		);
 	}
 	/**
@@ -64,7 +64,7 @@ class Aurora_StdClassTest extends Unittest_TestCase
 	 */
 	public function test_to_model($model, $stdclass) {
 		$this->assertEquals(
-		  Aurora_StdClass::to_model($stdclass, get_class($model)), $model
+		  Aurora_JSON::to_model($stdclass, get_class($model)), $model
 		);
 	}
 	/**
@@ -75,7 +75,7 @@ class Aurora_StdClassTest extends Unittest_TestCase
 		$col = new $col_class;
 		$col->add($model);
 		$this->assertEquals(
-		  Aurora_StdClass::from_collection($col), array($stdclass)
+		  Aurora_JSON::from_collection($col), array($stdclass)
 		);
 	}
 	/**
@@ -86,7 +86,7 @@ class Aurora_StdClassTest extends Unittest_TestCase
 		$col = new $col_class;
 		$col->add($model);
 		$this->assertEquals(
-		  Aurora_StdClass::to_collection(array($stdclass), get_class($col)), $col
+		  Aurora_JSON::to_collection(array($stdclass), get_class($col)), $col
 		);
 	}
 }
