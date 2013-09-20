@@ -8,7 +8,7 @@ return array
 	 * see the last config variable in this file
 	 */
 	'default' => array(
-		'type'				 => 'pdo',
+		'type'				 => 'PDO',
 		'connection'		 => array(
 			/**
 			 * The following options are available for PDO:
@@ -42,7 +42,7 @@ return array
 		'profiling'			 => TRUE,
 	),
 	'mysql' => array(
-		'type'       => 'mysql',
+		'type'       => 'MySQL',
 		'connection' => array(
 			/**
 			 * The following options are available for MySQL:
