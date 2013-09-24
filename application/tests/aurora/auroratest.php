@@ -57,20 +57,21 @@ class Aurora_AuroraTest extends Unittest_TestCase
 	 * @dataProvider provider_crud
 	 * @depends test_save_insert
 	 */
-	public function test_load_inserted($col) {
-		$cname = Au::type()->cname($col);
-		$aurora = Aurora::factory($col);
+	public function test_load_inserted($col_expected) {
+		$cname = Au::type()->cname($col_expected);
+		$aurora = Aurora::factory($col_expected);
 		$col_loaded = $aurora->load(static::$arrIDs[$cname]);
 		$this->assertTrue(Au::type()->is_collection($col_loaded));
 		foreach ($col_loaded as $model) {
 			$this->assertTrue($aurora->is_loaded($model));
 		}
+
 		// test to see if it has loaded correctly
 		foreach (static::$arrIDs[$cname] as $key => $id) {
-			$model = $col->offsetGet($key);
+			$model_expected = $col_expected->offsetGet($key);
 			$model_loaded = $col_loaded->offsetGet($id);
-			Au::prop()->set_pkey($model, $id);
-			$this->assertEquals($model, $model_loaded);
+			Au::prop()->set_pkey($model_expected, $id);
+			$this->assertEquals($model_expected, $model_loaded);
 		}
 	}
 	/**

@@ -11,6 +11,7 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 
 	public static $arrIDs = array();
 	public static $arrJSONs = array();
+
 	public function provider_crud() {
 		$event = new Model_Event;
 		$event->set_allDay(FALSE);
@@ -22,17 +23,20 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 			),
 		);
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 */
 	public function test_create($model) {
 		$cname = Aurora_Type::cname($model);
 		$uri = Aurora_Route::reverse($cname);
+		var_dump($uri);
 		$request_json = Au::json_encode($model);
-		$response_json = Request::factory($uri)
-			->method('POST')
-			->body($request_json)
-			->execute()->body();
+		$request = Request::factory($uri)
+		  ->method('POST')
+		  ->body($request_json);
+		$response = $request->execute();
+		$response_json = $response->body();
 		$created_model = Au::json_decode($response_json, $cname);
 		$id = Aurora_Property::get_pkey($created_model);
 		Au::prop()->set_pkey($model, $id);
@@ -40,6 +44,7 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 		$this->assertEquals($created_model, $model);
 		static::$arrIDs[$cname] = $id;
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_create
@@ -55,6 +60,7 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 		$this->assertTrue(Au::type()->is_model($created_model));
 		$this->assertEquals($created_model, $model);
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_index_create
@@ -76,6 +82,7 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 		$this->assertTrue(Au::type()->is_model($updated_model));
 		$this->assertEquals($updated_model, $model);
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_update
@@ -94,6 +101,7 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 		$this->assertTrue(Au::type()->is_model($updated_model));
 		$this->assertEquals($updated_model, $model);
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_index_update
@@ -113,6 +121,7 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 		$this->assertTrue(Au::type()->is_model($deleted_model));
 		$this->assertEquals($deleted_model, $model);
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_delete
@@ -125,4 +134,5 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 			->execute()->body();
 		$this->assertFalse(json_decode($response_json));
 	}
+
 }

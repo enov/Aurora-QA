@@ -115,16 +115,15 @@ class Aurora_Event extends Model_Event implements Interface_Aurora_Database
 		// table name with a dot
 		// $tbl = Au::db()->table($this) . '.';
 		// $model->_id = $row[$tbl . 'id'];
-		//$model->set_id($row['events.id']);
-		$model->_id = $row['events.id'];
-//		$model->set_start(
-//		  $this->mysql_get($row['events.date_start'])
-//		);
-//		$model->set_end(
-//		  $this->mysql_get($row['events.date_end'])
-//		);
-//		$model->set_allDay($row['events.all_day']);
-//		$model->set_title($row['events.title']);
+		$model->set_id($row['events.id']);
+		$model->set_start(
+		  $this->mysql_get($row['events.date_start'])
+		);
+		$model->set_end(
+		  $this->mysql_get($row['events.date_end'])
+		);
+		$model->set_allDay($row['events.all_day']);
+		$model->set_title($row['events.title']);
 	}
 	protected static function mysql_set(DateTime $date = NULL) {
 		if (empty($date))

@@ -8,21 +8,22 @@
  */
 class Aurora_RouteTest extends Unittest_TestCase
 {
+
 	public function provider() {
 		return array(
 			array(
 				'event',
 				array(
-					'directory' => 'api',
-					'controller' => 'event',
+					'directory' => 'API',
+					'controller' => 'Event',
 					'id' => NULL
 				),
 			),
 			array(
 				'category',
 				array(
-					'directory' => 'api',
-					'controller' => 'category',
+					'directory' => 'API',
+					'controller' => 'Category',
 					'id' => NULL
 				),
 			),
@@ -32,15 +33,18 @@ class Aurora_RouteTest extends Unittest_TestCase
 			),
 		);
 	}
+
 	/**
 	 * @dataProvider provider
 	 */
 	public function test_factory($cname, $expected) {
-		try {
-			$url = Aurora_Route::reverse($cname);
-		} catch (Exception $exc) {
-			$url = 'api/' . $cname;
-		}
-		$this->assertSame($expected, Aurora_Route::route($url));
+		$uri = Aurora_Route::reverse($cname);
+		$request = new Request($uri);
+		Route::set($cname, 'api/<path>', array('path' => '.*'))
+		  ->filter(array('Aurora_Route', 'map'));
+		$params = Route::get($cname)->matches($request);
+		$params = array_intersect_key($params, $expected);
+		$this->assertSame($expected, $params);
 	}
+
 }
