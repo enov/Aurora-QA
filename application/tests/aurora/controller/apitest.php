@@ -13,14 +13,21 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 	public static $arrJSONs = array();
 
 	public function provider_crud() {
+		// event
 		$event = new Model_Event;
 		$event->set_allDay(FALSE);
 		$event->set_start(new DateTime('+1 week'));
 		$event->set_end(new DateTime('+1 week'));
 		$event->set_title('Event initial title');
+		// Test_Event
+		$tevent = new Model_Test_Event;
+		$tevent->set_allDay(FALSE);
+		$tevent->set_start(new DateTime('+1 week'));
+		$tevent->set_end(new DateTime('+1 week'));
+		$tevent->set_title('Event initial title');
 		return array(
-			array($event, array('title' => 'Event updated title',),
-			),
+			array($event, array('title' => 'Event updated title',)),
+			array($tevent, array('title' => 'Event updated title',)),
 		);
 	}
 
@@ -30,7 +37,6 @@ class Aurora_Controller_APITest extends Unittest_TestCase
 	public function test_create($model) {
 		$cname = Aurora_Type::cname($model);
 		$uri = Aurora_Route::reverse($cname);
-		var_dump($uri);
 		$request_json = Au::json_encode($model);
 		$request = Request::factory($uri)
 		  ->method('POST')

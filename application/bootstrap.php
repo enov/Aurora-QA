@@ -137,7 +137,7 @@ Kohana::modules(array(
  */
 
 // Aurora RESTful API
-Route::set('api', 'api/<path>', array('path' => '.*'))
+Route::set('RESTful-api', 'api/<path>', array('path' => '.*'))
     ->filter(array('Aurora_Route', 'map'));
 
 // Default Route
