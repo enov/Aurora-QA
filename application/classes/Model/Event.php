@@ -102,20 +102,17 @@ class Model_Event
 
 class Aurora_Event extends Model_Event implements Interface_Aurora_Database
 {
+	use Trait_Aurora_Data_Map;
 	public function db_persist($model) {
-		return array(
-			'id' => $model->_id,
+		return $this->map_persist($model, ['id', 'title']) + array(
 			'date_start' => $this->mysql_set($model->get_start()),
 			'date_end' => $this->mysql_set($model->get_end()),
 			'all_day' => $model->_allDay,
-			'title' => $model->_title,
 		);
 	}
 	public function db_retrieve($model, array $row) {
-		// table name with a dot
-		// $tbl = Au::db()->table($this) . '.';
-		// $model->_id = $row[$tbl . 'id'];
-		$model->set_id($row['events.id']);
+		$this->map_retrieve($model, $row, ['id', 'title']);
+		$tbldot = Au::db()->prefix_table_dot($this);
 		$model->set_start(
 		  $this->mysql_get($row['events.date_start'])
 		);
@@ -123,7 +120,6 @@ class Aurora_Event extends Model_Event implements Interface_Aurora_Database
 		  $this->mysql_get($row['events.date_end'])
 		);
 		$model->set_allDay($row['events.all_day']);
-		$model->set_title($row['events.title']);
 	}
 	protected static function mysql_set(DateTime $date = NULL) {
 		if (empty($date))
