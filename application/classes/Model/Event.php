@@ -112,7 +112,6 @@ class Aurora_Event extends Model_Event implements Interface_Aurora_Database
 	}
 	public function db_retrieve($model, array $row) {
 		$this->map_retrieve($model, $row, ['id', 'title']);
-		$tbldot = Au::db()->prefix_table_dot($this);
 		$model->set_start(
 		  $this->mysql_get($row['events.date_start'])
 		);
