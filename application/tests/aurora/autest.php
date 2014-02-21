@@ -5,6 +5,7 @@
  *
  * @group Aurora
  * @group Aurora.Core
+ * @group Aurora.Core.Shortcut
  */
 class Aurora_AuTest extends Unittest_TestCase
 {

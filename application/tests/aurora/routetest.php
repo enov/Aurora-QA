@@ -4,7 +4,7 @@
  * Test case for Aurora_Collection class
  *
  * @group Aurora
- * @group Aurora.Collection
+ * @group Aurora.Route
  */
 class Aurora_RouteTest extends Unittest_TestCase
 {

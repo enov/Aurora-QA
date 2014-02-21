@@ -14,7 +14,9 @@ class Aurora_CoreTest extends Unittest_TestCase
 	 */
 	public static $arrIDs = array();
 	public static $arrJSONs = array();
-	public function provider_crud() {
+
+	public function provider_crud()
+	{
 		// Model_Event
 		$event = new Model_Event;
 		$event->set_allDay(FALSE);
@@ -48,10 +50,12 @@ class Aurora_CoreTest extends Unittest_TestCase
 			array($col_event_t, array('title' => 'Event updated title',)),
 		);
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 */
-	public function test_save_insert($col) {
+	public function test_save_insert($col)
+	{
 		// do the initial saving (insert)
 		Au::save($col);
 		// loop to assert if models now have IDs
@@ -61,14 +65,16 @@ class Aurora_CoreTest extends Unittest_TestCase
 		// save the IDs into a static field
 		$cname = Au::type()->cname($col);
 		static::$arrIDs[$cname] = array_map(function($model) {
-			  return Au::prop()->get_pkey($model);
-		  }, $col->to_array());
+			return Au::prop()->get_pkey($model);
+		}, $col->to_array());
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_save_insert
 	 */
-	public function test_load_inserted($col) {
+	public function test_load_inserted($col)
+	{
 		$cname = Au::type()->cname($col);
 		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
 		$this->assertTrue(Au::type()->is_collection($col_loaded));
@@ -83,11 +89,13 @@ class Aurora_CoreTest extends Unittest_TestCase
 			$this->assertEquals($model, $model_loaded);
 		}
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_load_inserted
 	 */
-	public function test_save_update($col, $prop_to_update) {
+	public function test_save_update($col, $prop_to_update)
+	{
 		$cname = Au::type()->cname($col);
 		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
 		$prop = key($prop_to_update);
@@ -102,11 +110,13 @@ class Aurora_CoreTest extends Unittest_TestCase
 			$this->assertSame(Au::prop()->get($model, $prop), $value);
 		}
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_save_update
 	 */
-	public function test_load_updated($col, $prop_to_update) {
+	public function test_load_updated($col, $prop_to_update)
+	{
 		$cname = Au::type()->cname($col);
 		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
 		$this->assertTrue(Au::type()->is_collection($col_loaded));
@@ -124,57 +134,70 @@ class Aurora_CoreTest extends Unittest_TestCase
 			$this->assertEquals($model, $model_loaded);
 		}
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_load_updated
 	 */
-	public function test_delete($col) {
+	public function test_delete($col)
+	{
 		$cname = Au::type()->cname($col);
 		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
 		Au::delete($col_loaded);
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_delete
 	 */
-	public function test_load_deleted($col, $prop_to_update) {
+	public function test_load_deleted($col, $prop_to_update)
+	{
 		$cname = Au::type()->cname($col);
 		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
 		$this->assertTrue(Au::type()->is_collection($col_loaded));
 		$this->assertSame($col_loaded->count(), 0);
 	}
+
 	/**
 	 * @dataProvider provider_crud
 	 * @depends test_load_inserted
 	 */
-	public function test_json_encode($col) {
+	public function test_json_encode($col)
+	{
 		$cname = Au::type()->cname($col);
 		$col_loaded = Au::load($cname, static::$arrIDs[$cname]);
 		$json = Au::json_encode($col_loaded);
 		$col_from_json = Au::json_decode($json, $cname);
 		$this->assertEquals($col_loaded, $col_from_json);
 	}
+
 	/**
 	 * @expectedException Kohana_Exception
 	 */
-	public function test_exception_load() {
+	public function test_exception_load()
+	{
 		$cname = 'Exceptionist';
 		$col_loaded = Au::load($cname);
 	}
+
 	/**
 	 * @expectedException Kohana_Exception
 	 */
-	public function test_exception_save() {
+	public function test_exception_save()
+	{
 		$cname = 'Exceptionist';
 		$model = Model::factory($cname);
 		Au::save($model);
 	}
+
 	/**
 	 * @expectedException Kohana_Exception
 	 */
-	public function test_exception_delete() {
+	public function test_exception_delete()
+	{
 		$cname = 'Exceptionist';
 		$model = Model::factory($cname);
 		Au::delete($model);
 	}
+
 }

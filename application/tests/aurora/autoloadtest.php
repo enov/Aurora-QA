@@ -5,6 +5,7 @@
  *
  * @group Aurora
  * @group Aurora.Core
+ * @group Aurora.Core.Autoload
  */
 class Aurora_AutoloadTest extends Unittest_TestCase
 {
